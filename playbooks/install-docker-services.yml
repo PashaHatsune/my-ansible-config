@@ -34,7 +34,9 @@
       register: compose_dirs
 
     - name: создания сетей для докера
-      shell: "docker network create proxy-network"
+      community.docker.docker_network:
+        name: proxy-network
+        state: present
 
     - name: запуск компоузей
       shell:
