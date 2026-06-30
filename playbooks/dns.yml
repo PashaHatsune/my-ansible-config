@@ -1,0 +1,13 @@
+- name: Настройка нормального DNS в resolv.conf
+  hosts: hosts
+  become: true
+  tasks:
+    - name: Копирование конфигурации в resolv.conf
+      copy:
+        dest: /etc/resolv.conf
+        content: |
+          nameserver 1.1.1.1
+          nameserver 8.8.8.8
+        owner: root
+        group: root
+        mode: '0644'
