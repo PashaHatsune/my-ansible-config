@@ -1,0 +1,22 @@
+version: "3.3"
+
+networks:
+  proxy-network:
+    external: true
+
+services:
+  alist:
+    image: "xhofe/alist:beta"
+    container_name: alist
+    restart: always
+    userns_mode: keep-id
+    # Запускаем бинарник напрямую, минуя скрипт с chown/su-exec
+    entrypoint: ["/opt/alist/alist", "server"]
+    security_opt:
+      - label=disable
+    networks:
+      - proxy-network
+    volumes:
+      - /home/miku/disk1/dev/alist/data:/opt/alist/data:Z
+      - /home/miku:/home/miku
+

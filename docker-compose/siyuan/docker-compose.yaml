@@ -1,0 +1,17 @@
+networks:
+  proxy-network:
+    external: true
+
+
+services:
+  siyuan:
+    image: ghcr.io/eightdoor/unlock-siyuan:latest
+    container_name: siyuan-unlock
+    ports:
+      - "0.0.0.0:6806:6806"
+    volumes:
+      - /home/miku/disk1/dev/siyuan:/siyuan/workspace:Z
+    command: ["--workspace=/siyuan/workspace", "--accessAuthCode=39miku!Hatsune"]
+    restart: always
+    networks:
+      - proxy-network

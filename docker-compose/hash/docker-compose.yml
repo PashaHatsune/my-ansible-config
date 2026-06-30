@@ -1,0 +1,23 @@
+networks:
+  proxy-network:
+    external: true
+
+services:
+  headscale:
+    image: docker.io/headscale/headscale:latest
+    restart: always
+    container_name: headscale
+    read_only: true
+    tmpfs:
+      - /var/run/headscale
+    volumes:
+      - /home/miku/disk1/dev/hash/config:/etc/headscale:ro,Z
+      - /home/miku/disk1/dev/hash/lib:/var/lib/headscale:Z
+    command: serve
+    healthcheck:
+        test: ["CMD", "headscale", "health"]
+    networks:
+      proxy-network:
+        aliases:
+          - headscale
+

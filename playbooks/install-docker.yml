@@ -1,0 +1,26 @@
+- name: docker install
+  hosts: myhosts
+  tasks:
+
+    - name: update packages
+      apt:
+        update_cache: yes
+        upgrade: dist
+    
+    - name: install dependencies
+      apt:
+        name:
+          - ca-certificates
+          - curl
+          - gnupg
+        state: present
+
+    - name: download installer docker
+      get_url:
+        url: https://get.docker.com
+        dest: /tmp/docker.sh
+        mode: '0775'
+
+    - name: start docker installer
+      shell: /tmp/docker.sh
+         

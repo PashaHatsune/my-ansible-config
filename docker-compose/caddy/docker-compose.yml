@@ -1,0 +1,18 @@
+networks:
+  proxy-network:
+    external: true
+
+services:
+  caddy:
+    image: caddy
+    container_name: caddy
+    restart: always
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - /home/miku/disk1/dev/caddy/data:/data:Z
+      - /home/miku/disk1/dev/caddy/config:/config:Z
+      - /home/miku/disk1/dev/caddy/Caddyfile:/etc/caddy/Caddyfile:Z
+    networks:
+      - proxy-network

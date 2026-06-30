@@ -1,0 +1,67 @@
+version: "3"
+
+networks:
+  proxy-network:
+    external: true
+
+services:
+  peertube:
+    image: chocobozzz/peertube:production
+    container_name: peertube
+    environment:
+      PEERTUBE_DB_USERNAME: peertube
+      PEERTUBE_DB_PASSWORD: peertube_password
+      PEERTUBE_DB_DATABASE: peertube
+      PEERTUBE_DB_HOSTNAME: peertube_postgres
+      PEERTUBE_WEBSERVER_HOSTNAME: peertube.pashahatsune.pp.ua
+      PEERTUBE_WEBSERVER_PORT: 443
+      PEERTUBE_WEBSERVER_HTTPS: "true"
+      PEERTUBE_ADMIN_EMAIL: pashahatsune@gmail.com             
+      PEERTUBE_SECRET: ba9f55f74137dab9c8992d1f1bd85b9ace2b8e5baf82c1b975e62f15c5f51ed1d
+      PEERTUBE_TRUST_PROXY: '["127.0.0.1", "loopback", "10.0.0.0/8"]'
+    ports:
+      - "1935:1935"
+    volumes:
+      - /home/miku/disk1/dev/peertube/docker-volume/data:/data:Z
+      - /home/miku/disk1/dev/peertube/docker-volume/config:/config:Z
+    networks:
+      - proxy-network
+    depends_on:
+      - postgres
+      - redis
+      - postfix
+    restart: "always"
+
+  postgres:
+    image: postgres:17-alpine
+    container_name: peertube_postgres
+    environment:
+      POSTGRES_USER: peertube
+      POSTGRES_PASSWORD: peertube_password
+      POSTGRES_DB: peertube
+    volumes:
+      - /home/miku/disk1/dev/peertube/docker-volume/db:/var/lib/postgresql/data:Z
+    networks:
+      - proxy-network
+    restart: "always"
+
+  redis:
+    image: redis:7-alpine
+    container_name: peertube_redis
+    volumes:
+      - /home/miku/disk1/dev/peertube/docker-volume/redis:/data:Z
+    networks:
+      - proxy-network
+    restart: "always"
+
+  postfix:
+    image: mwader/postfix-relay
+    container_name: peertube_postfix
+    security_opt:
+      - label=disable
+    volumes:
+      - /home/miku/disk1/dev/peertube/docker-volume/opendkim/keys:/etc/opendkim/keys:Z
+    networks:
+      - proxy-network
+    restart: "always"
+

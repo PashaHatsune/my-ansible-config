@@ -1,0 +1,23 @@
+
+networks:
+  proxy-network:
+    external: true
+
+services:
+  navidrome:
+    image: deluan/navidrome:pr-5351
+    ports:
+      - "4533:4533"
+    restart: always
+    dns:
+      - 1.1.1.1
+      - 8.8.8.8
+    environment:
+      ND_LASTFM_APIKEY: "f0feda6af93090edc2e3af31b785004b"
+      ND_LASTFM_SECRET: "eb73930f1a440be4430996435ad2ba33"
+      ND_LASTFM_ENABLED: "true"
+    volumes:
+        - "/home/miku/disk1/dev/storage/navidrome/data:/data:Z"
+        - "/home/miku/disk1/dev/storage/navidrome/music:/music:ro,Z"
+    networks:
+      - proxy-network
