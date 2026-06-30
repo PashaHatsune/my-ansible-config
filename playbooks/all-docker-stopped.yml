@@ -1,0 +1,15 @@
+- name: основка всех докеров
+  hosts: myhosts
+  become: true
+  tasks:
+    - name: получить список вообще всех контейнеров
+      community.docker.docker_host_info:
+        containers: true
+      register: host_info
+
+    - name: остановить все найденные контейнеры
+      community.docker.docker_container:
+        name: "{{ item.Id }}"
+        state: stopped
+      loop: "{{ host_info.containers }}"
+      when: host_info.containers | length > 0
