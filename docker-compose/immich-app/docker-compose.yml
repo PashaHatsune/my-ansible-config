@@ -52,7 +52,7 @@ services:
     volumes:
       - model-cache:/cache
     env_file:
-      - .env
+      - /home/mikuserver/disk1/dev/immich/.env
     restart: always
     healthcheck:
       disable: false
