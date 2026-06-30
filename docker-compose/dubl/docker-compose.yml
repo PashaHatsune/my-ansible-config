@@ -4,9 +4,6 @@ services:
     image: garethgeorge/backrest:latest
     container_name: backrest
     hostname: backrest
-    
-    podman_args:
-      - "--pod=new:"
 
     userns_mode: "keep-id"
 
@@ -14,15 +11,16 @@ services:
       - label=disable
 
     volumes:
-      - /home/miku/disk1/dev/backrest:/data:z
-      - /home/miku/disk1/dev/backrest/config:/config:z
-      - /home/miku/disk1/dev/backrest/cache:/cache:z
+      - /home//disk1/dev/backrest:/data:z
+      - /home/mikuserver/disk1/dev/backrest/config:/config:z
+      - /home/mikuserver/disk1/dev/backrest/cache:/cache:z
       
-      - /home/miku/dev:/userdata/miku/dev:ro
-      - /home/miku/disk1/dev:/userdata/disk1/dev:ro
+
+      - /home/mikuserver/dev:/userdata/mikuserver/dev:ro
+      - /home/mikuserver/disk1/dev:/userdata/disk1/dev:ro
       
-      - /home/miku/backups:/repos/backups
-      - /home/miku/disk1/backups:/repos/disk1-backups
+      - /home/mikuserver/backups:/repos/backups
+      - /home/mikuserver/disk1/backups:/repos/disk1-backups
 
     environment:
       - BACKREST_DATA=/data

@@ -4,9 +4,9 @@ services:
     env_file: .env
     restart: always
     volumes:
-      - /home/miku/disk1/dev/linkwarden/pgdata:/var/lib/postgresql/data
+      - /home/mikuserver/disk1/dev/linkwarden/pgdata:/var/lib/postgresql/data
   linkwarden:
-    env_file: .env
+    env_file: /home/mikuserver/disk1/dev/linkwarden/.env
     environment:
       - DATABASE_URL=postgresql://postgres:${POSTGRES_PASSWORD}@postgres:5432/postgres
     restart: always
@@ -15,7 +15,7 @@ services:
     ports:
       - 3000:3000
     volumes:
-      - /home/miku/disk1/dev/linkwarden/data:/data/data
+      - /home/mikuserver/disk1/dev/linkwarden/data:/data/data
     depends_on:
       - postgres
       - meilisearch
@@ -25,4 +25,4 @@ services:
     env_file:
       - .env
     volumes:
-      - /home/miku/disk1/dev/linkwarden/meili_data:/meili_data
+      - /home/mikuserver/disk1/dev/linkwarden/meili_data:/meili_data

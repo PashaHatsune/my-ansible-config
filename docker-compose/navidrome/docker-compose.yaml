@@ -17,7 +17,7 @@ services:
       ND_LASTFM_SECRET: "eb73930f1a440be4430996435ad2ba33"
       ND_LASTFM_ENABLED: "true"
     volumes:
-        - "/home/miku/disk1/dev/storage/navidrome/data:/data:Z"
-        - "/home/miku/disk1/dev/storage/navidrome/music:/music:ro,Z"
+        - "/home/mikuserver/disk1/dev/storage/navidrome/data:/data:Z"
+        - "/home/mikuserver/disk1/dev/storage/navidrome/music:/music:ro,Z"
     networks:
       - proxy-network

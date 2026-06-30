@@ -16,8 +16,8 @@ services:
     security_opt:
       - label=disable
     volumes:
-      - /home/miku/disk1/dev/tuwunel/tuwunel.toml:/etc/tuwunel.toml:ro,Z
-      - /home/miku/disk1/dev/tuwunel/matrix_db:/var/lib/tuwunel:Z
+      - /home/mikuserver/disk1/dev/tuwunel/tuwunel.toml:/etc/tuwunel.toml:ro,Z
+      - /home/mikuserver/disk1/dev/tuwunel/matrix_db:/var/lib/tuwunel:Z
     environment:
       - TUWUNEL_CONFIG=/etc/tuwunel.toml  
     # Больше не нужны ports: и dns:, так как мы в сети хоста

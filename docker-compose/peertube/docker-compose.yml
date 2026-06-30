@@ -22,8 +22,8 @@ services:
     ports:
       - "1935:1935"
     volumes:
-      - /home/miku/disk1/dev/peertube/docker-volume/data:/data:Z
-      - /home/miku/disk1/dev/peertube/docker-volume/config:/config:Z
+      - /home/mikuserver/disk1/dev/peertube/docker-volume/data:/data:Z
+      - /home/mikuserverserver/disk1/dev/peertube/docker-volume/config:/config:Z
     networks:
       - proxy-network
     depends_on:
@@ -40,7 +40,7 @@ services:
       POSTGRES_PASSWORD: peertube_password
       POSTGRES_DB: peertube
     volumes:
-      - /home/miku/disk1/dev/peertube/docker-volume/db:/var/lib/postgresql/data:Z
+      - /home/mikuserver/disk1/dev/peertube/docker-volume/db:/var/lib/postgresql/data:Z
     networks:
       - proxy-network
     restart: "always"
@@ -49,7 +49,7 @@ services:
     image: redis:7-alpine
     container_name: peertube_redis
     volumes:
-      - /home/miku/disk1/dev/peertube/docker-volume/redis:/data:Z
+      - /home/mikuserver/disk1/dev/peertube/docker-volume/redis:/data:Z
     networks:
       - proxy-network
     restart: "always"
@@ -60,7 +60,7 @@ services:
     security_opt:
       - label=disable
     volumes:
-      - /home/miku/disk1/dev/peertube/docker-volume/opendkim/keys:/etc/opendkim/keys:Z
+      - /home/mikuserver/disk1/dev/peertube/docker-volume/opendkim/keys:/etc/opendkim/keys:Z
     networks:
       - proxy-network
     restart: "always"

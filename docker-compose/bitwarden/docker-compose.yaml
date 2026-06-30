@@ -11,10 +11,10 @@ services:
     container_name: bitwarden
     image: vaultwarden/server:latest
     volumes:
-      - /home/miku/disk1/dev/bitwarden/bitwarden/data:/data:Z
+      - /home/mikuserver/disk1/dev/bitwarden/bitwarden/data:/data:Z
       # Монтируем всю папку letsencrypt по тому же пути, что и на хосте
     env_file:
-      - config.env
+      - /home/mikuserver/disk1/dev/bitwarden/bitwarden/config.env
     ports:
       - "2544:80"
     restart: always

@@ -18,5 +18,5 @@ services:
       - proxy-network
     volumes:
       - /home/miku/disk1/dev/alist/data:/opt/alist/data:Z
-      - /home/miku:/home/miku
+      - /home/mikuserver:/home/mikuserver:Z
 

@@ -1,0 +1,13 @@
+- name: монтирование нужных дисков
+  hosts: myhosts
+  tasks:
+    - name: создание папки для монтирования диска
+      file:
+        path: /home/mikuserver/disk1
+        state: directory
+    - name: монтирование диска
+      mount:
+        path: /home/mikuserver/disk1
+        src: /dev/disk/by-uuid/5bfa6035-b2e6-4a81-bb79-a841c6c7497f
+        fstype: btrfs
+        state: mounted

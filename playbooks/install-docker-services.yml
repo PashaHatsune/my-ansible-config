@@ -1,0 +1,40 @@
+- name: установка компоузей
+  hosts: myhosts
+  tasks:
+    - name: скачивание компоузей из репозитория
+      git:
+        repo: https://github.com/PashaHatsune/my-ansible-config.git
+        dest: /tmp/my-ansible-config
+        clone: yes
+    
+    - name: создание папоки для компоузей
+      file:
+        path: /home/miku/dev
+        state: directory
+
+    - name: копирование компоузей
+      copy: 
+        src: /tmp/my-ansible-config/docker-compose/
+        dest: /home/mikuserver/dev
+        owner: mikuserver
+        group: mikuserver
+        mode: '0775'
+        remote_src: true
+
+    - name : удаление временной папки
+      file: 
+        path: /tmp/my-ansible-config
+        state: absent
+
+    
+    - name: поиск компоузей
+      find:
+        paths: /home/mikuserver/dev
+        file_type: directory
+      register: compose_dirs
+
+    - name: запуск компоузей
+      shell:
+        cmd: "docker compose up -d"
+        chdir: "{{ item.path }}"
+      loop: "{{ compose_dirs.files }}"
