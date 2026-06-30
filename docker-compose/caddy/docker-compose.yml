@@ -11,8 +11,8 @@ services:
       - 80:80
       - 443:443
     volumes:
-      - /home/miku/disk1/dev/caddy/data:/data:Z
-      - /home/miku/disk1/dev/caddy/config:/config:Z
-      - /home/miku/disk1/dev/caddy/Caddyfile:/etc/caddy/Caddyfile:Z
+      - /home/mikuserver/disk1/dev/caddy/data:/data:Z
+      - /home/mikuserver/disk1/dev/caddy/config:/config:Z
+      - /home/mikuserver/disk1/dev/caddy/Caddyfile:/etc/caddy/Caddyfile:Z
     networks:
       - proxy-network

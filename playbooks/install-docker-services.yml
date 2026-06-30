@@ -33,6 +33,9 @@
         file_type: directory
       register: compose_dirs
 
+    - name: создания сетей для докера
+      shell: "docker network create proxy-network"
+
     - name: запуск компоузей
       shell:
         cmd: "docker compose up -d"

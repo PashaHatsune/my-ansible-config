@@ -26,7 +26,7 @@ services:
       - ${UPLOAD_LOCATION}:/data:Z
       - /etc/localtime:/etc/localtime:ro
     env_file:
-      - .env
+      - /home/mikuserver/disk1/dev/immich/.env
     ports:
       - '2283:2283'
     depends_on:
@@ -52,7 +52,7 @@ services:
     volumes:
       - model-cache:/cache
     env_file:
-      - /home/mikuserver/disk1/dev/immich/.env
+      - .env
     restart: always
     healthcheck:
       disable: false
