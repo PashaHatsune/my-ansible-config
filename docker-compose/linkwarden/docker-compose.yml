@@ -1,7 +1,7 @@
 services:
   postgres:
     image: postgres:16-alpine
-    env_file: .env
+    env_file: /home/mikuserver/disk1/dev/linkwarden/.env
     restart: always
     volumes:
       - /home/mikuserver/disk1/dev/linkwarden/pgdata:/var/lib/postgresql/data
