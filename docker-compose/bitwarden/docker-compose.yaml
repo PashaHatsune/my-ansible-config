@@ -15,7 +15,7 @@ services:
     labels:
       caddy: btw.pashahatsune.pp.ua
       caddy.@block: "not remote_ip 10.0.0.0/8 172.16.0.0/12 192.168.0.0/16 fd00::/8"
-      caddy.respond.@block: "404"
+      caddy.respond: "@block 404"
       caddy.reverse_proxy: "{{upstreams 80}}"
     ports:
       - "2544:80"

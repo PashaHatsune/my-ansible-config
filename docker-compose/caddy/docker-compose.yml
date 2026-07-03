@@ -4,6 +4,9 @@ networks:
 
 services:
   caddy:
+    dns:
+      - 1.1.1.1
+      - 8.8.8.8
     image: lucaslorentz/caddy-docker-proxy:latest
     container_name: caddy
     restart: unless-stopped
