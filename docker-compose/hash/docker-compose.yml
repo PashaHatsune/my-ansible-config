@@ -19,5 +19,11 @@ services:
     networks:
       proxy-network:
         aliases:
-          - headscale
+          - proxy-network
 
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.headscale.rule=Host(`headscale.pashahatsune.pp.ua`)"
+      - "traefik.http.routers.headscale.entrypoints=websecure"
+      - "traefik.http.routers.headscale.tls=true"
+      - "traefik.http.routers.headscale.tls.certresolver=le"

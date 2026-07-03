@@ -1,0 +1,7 @@
+- name: установка webmin
+  hosts: myhosts
+  become: yes
+  tasks:
+    - name: установить webmin через .deb
+      apt:
+        deb: https://download.webmin.com/download/repository/pool/contrib/w/webmin/webmin_2.651_all.deb
