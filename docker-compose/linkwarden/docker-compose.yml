@@ -1,5 +1,5 @@
 networks:
-  proxy-network:
+  caddy_net:
     external: true
 
 services:
@@ -9,22 +9,19 @@ services:
     restart: always
     volumes:
       - /home/mikuserver/disk1/dev/linkwarden/pgdata:/var/lib/postgresql/data
+    networks:
+      - caddy_net
   linkwarden:
     env_file: /home/mikuserver/disk1/dev/linkwarden/.env
     environment:
       - DATABASE_URL=postgresql://postgres:${POSTGRES_PASSWORD}@postgres:5432/postgres
     restart: always
-    # build: . # uncomment to build from source
-    image: ghcr.io/linkwarden/linkwarden:latest # comment to build from source
+    image: ghcr.io/linkwarden/linkwarden:latest
     labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.linkwarden.rule=Host(`linkwarden.pashahatsune.pp.ua`)"
-      - "traefik.http.routers.linkwarden.entrypoints=websecure"
-      - "traefik.http.routers.linkwarden.tls=true"
-      - "traefik.http.routers.linkwarden.tls.certresolver=le"
-      - "traefik.http.services.linkwarden.loadbalancer.server.port=3000"
+      caddy: linkwarden.pashahatsune.pp.ua
+      caddy.reverse_proxy: "{{upstreams 3000}}"
     networks:
-      - proxy-network
+      - caddy_net
     ports:
       - 3000:3000
     volumes:
@@ -36,7 +33,7 @@ services:
     image: getmeili/meilisearch:v1.12.8
     restart: always
     networks:
-      - proxy-network
+      - caddy_net
     env_file:
       - /home/mikuserver/disk1/dev/linkwarden/.env
     volumes:

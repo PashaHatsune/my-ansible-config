@@ -1,7 +1,6 @@
 networks:
-  proxy-network:
+  caddy_net:
     external: true
-
 
 services:
   siyuan:
@@ -14,12 +13,7 @@ services:
     command: ["--workspace=/siyuan/workspace", "--accessAuthCode=39miku!Hatsune"]
     restart: always
     networks:
-      - proxy-network
-
+      - caddy_net
     labels:
-      - "traefik.enable=true"
-
-      - "traefik.http.routers.siyuan.rule=Host(`siyuan.pashahatsune.pp.ua`)"
-      - "traefik.http.routers.siyuan.entrypoints=websecure"
-      - "traefik.http.routers.siyuan.tls=true"
-      - "traefik.http.routers.siyuan.tls.certresolver=le"
+      caddy: siyuan.pashahatsune.pp.ua
+      caddy.reverse_proxy: "{{upstreams 6806}}"

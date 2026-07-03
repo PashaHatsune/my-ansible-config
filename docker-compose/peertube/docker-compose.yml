@@ -1,7 +1,7 @@
 version: "3"
 
 networks:
-  proxy-network:
+  caddy_net:
     external: true
 
 services:
@@ -16,7 +16,7 @@ services:
       PEERTUBE_WEBSERVER_HOSTNAME: peertube.pashahatsune.pp.ua
       PEERTUBE_WEBSERVER_PORT: 443
       PEERTUBE_WEBSERVER_HTTPS: "true"
-      PEERTUBE_ADMIN_EMAIL: pashahatsune@gmail.com             
+      PEERTUBE_ADMIN_EMAIL: pashahatsune@gmail.com
       PEERTUBE_SECRET: ba9f55f74137dab9c8992d1f1bd85b9ace2b8e5baf82c1b975e62f15c5f51ed1d
       PEERTUBE_TRUST_PROXY: '["127.0.0.1", "loopback", "10.0.0.0/8"]'
     ports:
@@ -25,19 +25,15 @@ services:
       - /home/mikuserver/disk1/dev/peertube/docker-volume/data:/data:Z
       - /home/mikuserverserver/disk1/dev/peertube/docker-volume/config:/config:Z
     networks:
-      - proxy-network
+      - caddy_net
     depends_on:
       - postgres
       - redis
       - postfix
     restart: "always"
     labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.peertube.rule=Host(`peertube.pashahatsune.pp.ua`)"
-      - "traefik.http.routers.peertube.entrypoints=websecure"
-      - "traefik.http.routers.peertube.tls=true"
-      - "traefik.http.routers.peertube.tls.certresolver=le"
-      - "traefik.http.services.peertube.loadbalancer.server.port=9000"
+      caddy: peertube.pashahatsune.pp.ua
+      caddy.reverse_proxy: "{{upstreams 9000}}"
 
   postgres:
     image: postgres:17-alpine
@@ -49,7 +45,7 @@ services:
     volumes:
       - /home/mikuserver/disk1/dev/peertube/docker-volume/db:/var/lib/postgresql/data:Z
     networks:
-      - proxy-network
+      - caddy_net
     restart: "always"
 
   redis:
@@ -58,7 +54,7 @@ services:
     volumes:
       - /home/mikuserver/disk1/dev/peertube/docker-volume/redis:/data:Z
     networks:
-      - proxy-network
+      - caddy_net
     restart: "always"
 
   postfix:
@@ -69,7 +65,5 @@ services:
     volumes:
       - /home/mikuserver/disk1/dev/peertube/docker-volume/opendkim/keys:/etc/opendkim/keys:Z
     networks:
-      - proxy-network
+      - caddy_net
     restart: "always"
-
-

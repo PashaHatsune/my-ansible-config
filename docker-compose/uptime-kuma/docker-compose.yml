@@ -3,14 +3,13 @@ services:
     image: louislam/uptime-kuma:2
     container_name: uptime-kuma
     restart: always
-
     volumes:
-      - /home/mikuserver/disk1/dev/uptime-kuma/data:/app/data  # Configuring persistent storage
+      - /home/mikuserver/disk1/dev/uptime-kuma/data:/app/data
     environment:
-      - TZ=UTC  # Set the timezone (change to your preferred local timezone so monitoring times are the same)
-      - UMASK=0022  # Set your file permissions manually
+      - TZ=UTC
+      - UMASK=0022
     networks:
-      - proxy-network  # add your own custom network config
+      - caddy_net
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:3001"]
       interval: 30s
@@ -23,11 +22,9 @@ services:
         max-size: "10m"
         max-file: "3"
     labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.uptime-kuma.rule=Host(`uptime.pashahatsune.pp.ua`)"
-      - "traefik.http.routers.uptime-kuma.entrypoints=websecure"
-      - "traefik.http.routers.uptime-kuma.tls=true"
-      - "traefik.http.routers.uptime-kuma.tls.certresolver=le"
+      caddy: uptime.pashahatsune.pp.ua
+      caddy.reverse_proxy: "{{upstreams 3001}}"
+
 networks:
-  proxy-network:
+  caddy_net:
     external: true

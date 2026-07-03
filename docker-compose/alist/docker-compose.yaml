@@ -1,7 +1,7 @@
 version: "3.3"
 
 networks:
-  proxy-network:
+  caddy_net:
     external: true
 
 services:
@@ -10,20 +10,14 @@ services:
     container_name: alist
     restart: always
     userns_mode: keep-id
-    # Запускаем бинарник напрямую, минуя скрипт с chown/su-exec
     entrypoint: ["/opt/alist/alist", "server"]
     security_opt:
       - label=disable
     networks:
-      - proxy-network
+      - caddy_net
     labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.alist.rule=Host(`alist.pashahatsune.pp.ua`)"
-      - "traefik.http.routers.alist.entrypoints=websecure"
-      - "traefik.http.routers.alist.tls=true"
-      - "traefik.http.routers.alist.tls.certresolver=le"
-      - "traefik.http.services.alist.loadbalancer.server.port=5244"
+      caddy: alist.pashahatsune.pp.ua
+      caddy.reverse_proxy: "{{upstreams 5244}}"
     volumes:
       - /home/miku/disk1/dev/alist/data:/opt/alist/data:Z
       - /home/mikuserver:/home/mikuserver:Z
-

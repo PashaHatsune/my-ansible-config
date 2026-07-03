@@ -1,33 +1,21 @@
 version: '3.8'
 networks:
-  proxy-network:
+  caddy_net:
     external: true
 services:
   tuwunel:
     image: jevolk/tuwunel:latest
     container_name: tuwunel
     restart: always
-    # ИСПОЛЬЗУЕМ СЕТЬ ХОСТА: это решит проблему с DNS и скоростью
     networks:
-      - proxy-network
-    
-
-
+      - caddy_net
     security_opt:
       - label=disable
     volumes:
       - /home/mikuserver/disk1/dev/tuwunel/tuwunel.toml:/etc/tuwunel.toml:ro,Z
       - /home/mikuserver/disk1/dev/tuwunel/matrix_db:/var/lib/tuwunel:Z
     environment:
-      - TUWUNEL_CONFIG=/etc/tuwunel.toml  
-    # Больше не нужны ports: и dns:, так как мы в сети хоста
-
+      - TUWUNEL_CONFIG=/etc/tuwunel.toml
     labels:
-      - "traefik.enable=true"
-
-      - "traefik.http.routers.tuwunel.rule=Host(`pashahatsune.pp.ua`)"
-      - "traefik.http.routers.tuwunel.entrypoints=websecure"
-      - "traefik.http.routers.tuwunel.tls=true"
-      - "traefik.http.routers.tuwunel.tls.certresolver=le"
-
-      # - "traefik.http.services.alist.loadbalancer.server.port=5244"
+      caddy: pashahatsune.pp.ua
+      caddy.reverse_proxy: "{{upstreams 8080}}"

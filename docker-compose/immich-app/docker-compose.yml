@@ -1,6 +1,6 @@
 name: immich
 networks:
-  proxy-network:
+  caddy_net:
     external: true
 services:
   immich-server:
@@ -17,18 +17,15 @@ services:
       - redis
       - database
     restart: always
-
     labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.immich.rule=Host(`immich.pashahatsune.pp.ua`)"
-      - "traefik.http.routers.immich.entrypoints=websecure"
-      - "traefik.http.routers.immich.tls=true"
-      - "traefik.http.routers.immich.tls.certresolver=le"
-      - "traefik.http.services.immich.loadbalancer.server.port=2283"
+      caddy: immich.pashahatsune.pp.ua
+      caddy.@block: "not remote_ip 10.0.0.0/8 172.16.0.0/12 192.168.0.0/16 fd00::/8"
+      caddy.respond.@block: "404"
+      caddy.reverse_proxy: "{{upstreams 2283}}"
     healthcheck:
       disable: false
     networks:
-      - proxy-network
+      - caddy_net
 
   redis:
     container_name: immich_redis
@@ -37,7 +34,8 @@ services:
       test: redis-cli ping || exit 1
     restart: always
     networks:
-      - proxy-network
+      - caddy_net
+
   database:
     container_name: immich_postgres
     image: ghcr.io/immich-app/postgres:14-vectorchord0.4.3-pgvectors0.2.0@sha256:bcf63357191b76a916ae5eb93464d65c07511da41e3bf7a8416db519b40b1c23
@@ -56,5 +54,4 @@ services:
     healthcheck:
       disable: false
     networks:
-      - proxy-network
- 
+      - caddy_net

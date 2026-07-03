@@ -1,7 +1,7 @@
 version: "3.2"
 
 networks:
-  proxy-network:
+  caddy_net:
     external: true
 
 services:
@@ -9,39 +9,27 @@ services:
     image: garethgeorge/backrest:latest
     container_name: backrest
     hostname: backrest
-
     userns_mode: "keep-id"
-
     security_opt:
       - label=disable
-
     volumes:
       - /home//disk1/dev/backrest:/data:z
       - /home/mikuserver/disk1/dev/backrest/config:/config:z
       - /home/mikuserver/disk1/dev/backrest/cache:/cache:z
-      
-
       - /home/mikuserver/dev:/userdata/mikuserver/dev:ro
       - /home/mikuserver/disk1/dev:/userdata/disk1/dev:ro
-      
       - /home/mikuserver/backups:/repos/backups
       - /home/mikuserver/disk1/backups:/repos/disk1-backups
-
     environment:
       - BACKREST_DATA=/data
       - BACKREST_CONFIG=/config/config.json
       - XDG_CACHE_HOME=/cache
       - TZ=Europe/Moscow
     networks:
-      - proxy-network
+      - caddy_net
     restart: always
     labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.backrest.rule=Host(`backrest.pashahatsune.pp.ua`)"
-      - "traefik.http.routers.backrest.entrypoints=websecure"
-      - "traefik.http.routers.backrest.tls=true"
-      - "traefik.http.routers.backrest.tls.certresolver=le"
-      - "traefik.http.services.backrest.loadbalancer.server.port=9898"
+      caddy: backrest.pashahatsune.pp.ua
+      caddy.reverse_proxy: "{{upstreams 9898}}"
     ports:
       - 9898:9898
-

@@ -1,5 +1,5 @@
 networks:
-  proxy-network:
+  caddy_net:
     external: true
 
 services:
@@ -17,13 +17,7 @@ services:
     healthcheck:
         test: ["CMD", "headscale", "health"]
     networks:
-      proxy-network:
-        aliases:
-          - proxy-network
-
+      - caddy_net
     labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.headscale.rule=Host(`headscale.pashahatsune.pp.ua`)"
-      - "traefik.http.routers.headscale.entrypoints=websecure"
-      - "traefik.http.routers.headscale.tls=true"
-      - "traefik.http.routers.headscale.tls.certresolver=le"
+      caddy: wg.pashahatsune.pp.ua
+      caddy.reverse_proxy: "{{upstreams 8080}}"

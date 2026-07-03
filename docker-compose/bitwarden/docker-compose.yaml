@@ -1,10 +1,8 @@
 version: "3.7"
 
 networks:
-  proxy-network:
+  caddy_net:
     external: true
-
-
 
 services:
   bitwarden:
@@ -12,17 +10,15 @@ services:
     image: vaultwarden/server:latest
     volumes:
       - /home/mikuserver/disk1/dev/bitwarden/bitwarden/data:/data:Z
-      # Монтируем всю папку letsencrypt по тому же пути, что и на хосте
     env_file:
       - /home/mikuserver/disk1/dev/bitwarden/bitwarden/config.env
     labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.bitwarden.rule=Host(`btw.pashahatsune.pp.ua`)"
-      - "traefik.http.routers.bitwarden.entrypoints=websecure"
-      - "traefik.http.routers.bitwarden.tls=true"
-      - "traefik.http.routers.bitwarden.tls.certresolver=le"
+      caddy: btw.pashahatsune.pp.ua
+      caddy.@block: "not remote_ip 10.0.0.0/8 172.16.0.0/12 192.168.0.0/16 fd00::/8"
+      caddy.respond.@block: "404"
+      caddy.reverse_proxy: "{{upstreams 80}}"
     ports:
       - "2544:80"
     restart: always
     networks:
-      - proxy-network
+      - caddy_net

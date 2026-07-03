@@ -1,22 +1,19 @@
 services:
-  homepage:
-    image: ghcr.io/gethomepage/homepage:latest
-    container_name: homepage
+  homarr:
+    container_name: homarr
+    image: ghcr.io/homarr-labs/homarr:latest
+    restart: unless-stopped
     volumes:
-      - /home/mikuserver/disk1/dev/homepage/config:/app/config # Make sure your local config directory exists
-      - /var/run/docker.sock:/var/run/docker.sock:ro # (optional) For docker integrations
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /home/mikuserver/disk1/dev/homarr:/appdata:Z
     environment:
-      HOMEPAGE_ALLOWED_HOSTS: homepage.pashahatsune.pp.ua
-    networks:
-      - proxy-network
+      - SECRET_ENCRYPTION_KEY=060a836266a973ffbbbdb9c3770aacf5ebd117b9c7351488e4380c58dfcce616
     labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.homepage.rule=Host(`homepage.pashahatsune.pp.ua`)"
-      - "traefik.http.routers.homepage.entrypoints=websecure"
-      - "traefik.http.routers.homepage.tls=true"
-      - "traefik.http.routers.homepage.tls.certresolver=le"
-
+      caddy: homepage.pashahatsune.pp.ua
+      caddy.reverse_proxy: "{{upstreams 3000}}"
+    networks:
+      - caddy_net
 
 networks:
-  proxy-network:
+  caddy_net:
     external: true
