@@ -1,4 +1,9 @@
 version: "3.2"
+
+networks:
+  proxy-network:
+    external: true
+
 services:
   backrest:
     image: garethgeorge/backrest:latest
@@ -27,7 +32,16 @@ services:
       - BACKREST_CONFIG=/config/config.json
       - XDG_CACHE_HOME=/cache
       - TZ=Europe/Moscow
+    networks:
+      - proxy-network
     restart: always
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.backrest.rule=Host(`backrest.pashahatsune.pp.ua`)"
+      - "traefik.http.routers.backrest.entrypoints=websecure"
+      - "traefik.http.routers.backrest.tls=true"
+      - "traefik.http.routers.backrest.tls.certresolver=le"
+      - "traefik.http.services.backrest.loadbalancer.server.port=9898"
     ports:
       - 9898:9898
 

@@ -21,3 +21,13 @@ services:
     environment:
       - TUWUNEL_CONFIG=/etc/tuwunel.toml  
     # Больше не нужны ports: и dns:, так как мы в сети хоста
+
+    labels:
+      - "traefik.enable=true"
+
+      - "traefik.http.routers.tuwunel.rule=Host(`pashahatsune.pp.ua`)"
+      - "traefik.http.routers.tuwunel.entrypoints=websecure"
+      - "traefik.http.routers.tuwunel.tls=true"
+      - "traefik.http.routers.tuwunel.tls.certresolver=le"
+
+      # - "traefik.http.services.alist.loadbalancer.server.port=5244"

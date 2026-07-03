@@ -31,6 +31,13 @@ services:
       - redis
       - postfix
     restart: "always"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.peertube.rule=Host(`peertube.pashahatsune.pp.ua`)"
+      - "traefik.http.routers.peertube.entrypoints=websecure"
+      - "traefik.http.routers.peertube.tls=true"
+      - "traefik.http.routers.peertube.tls.certresolver=le"
+      - "traefik.http.services.peertube.loadbalancer.server.port=9000"
 
   postgres:
     image: postgres:17-alpine
@@ -64,4 +71,5 @@ services:
     networks:
       - proxy-network
     restart: "always"
+
 

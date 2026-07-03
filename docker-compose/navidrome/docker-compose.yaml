@@ -19,5 +19,11 @@ services:
     volumes:
         - "/home/mikuserver/disk1/dev/storage/navidrome/data:/data:Z"
         - "/home/mikuserver/disk1/dev/storage/navidrome/music:/music:ro,Z"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.navidrome.rule=Host(`navidrome.pashahatsune.pp.ua`)"
+      - "traefik.http.routers.navidrome.entrypoints=websecure"
+      - "traefik.http.routers.navidrome.tls=true"
+      - "traefik.http.routers.navidrome.tls.certresolver=le"
     networks:
       - proxy-network

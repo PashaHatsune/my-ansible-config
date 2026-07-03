@@ -1,0 +1,71 @@
+name: immich
+networks:
+  proxy-network:
+    external: true
+services:
+  immich-server:
+    container_name: immich_server
+    image: ghcr.io/immich-app/immich-server:v3.0.0-rc.3
+    volumes:
+      - /home/mikuserver/disk1/dev/immich-app/library:/data:Z
+      - /etc/localtime:/etc/localtime:ro
+    env_file:
+      - /home/mikuserver/disk1/dev/immich-app/.env
+    ports:
+      - "2283:2283"
+    depends_on:
+      - redis
+      - database
+    restart: always
+    healthcheck:
+      disable: false
+    networks:
+      - proxy-network
+  redis:
+    container_name: immich_redis
+    image: docker.io/valkey/valkey:9@sha256:4963247afc4cd33c7d3b2d2816b9f7f8eeebab148d29056c2ca4d7cbc966f2d9
+    healthcheck:
+      test: redis-cli ping || exit 1
+    restart: always
+    networks:
+      - proxy-network
+  database:
+    container_name: immich_postgres
+    image: ghcr.io/immich-app/postgres:14-vectorchord0.4.3-pgvectors0.2.0@sha256:bcf63357191b76a916ae5eb93464d65c07511da41e3bf7a8416db519b40b1c23
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_DB: immich
+      POSTGRES_INITDB_ARGS: "--data-checksums"
+      DB_STORAGE_TYPE: "HDD"
+    volumes:
+      - /home/mikuserver/disk1/dev/immich-app/postgres:/var/lib/postgresql/data:Z
+    shm_size: 128mb
+    env_file:
+      - /home/mikuserver/disk1/dev/immich-app/.env
+    restart: always
+    healthcheck:
+      disable: false
+    networks:
+      - proxy-network
+
+  immich-analyze:
+    image: ghcr.io/timasoft/immich-analyze:main
+    container_name: immich-analyze
+    restart: unless-stopped
+    networks:
+      - proxy-network
+    environment:
+      - IMMICH_ANALYZE_INTERFACE=ollama  # or "llamacpp"
+      - IMMICH_ANALYZE_HOSTS=http://192.168.1.130:11434
+      - IMMICH_ANALYZE_MODEL_NAME=gemma3:4b
+      - IMMICH_API_URL=http://immich-server:2283
+      - IMMICH_API_KEY=CMdvLNPJJ33Xo24VloxQDwRLahVTGbMo6neaPrF0jg
+      - IMMICH_ANALYZE_LANG=ru
+      - IMMICH_ANALYZE_OVERWRITE_POLICY=all
+      - IMMICH_ANALYZE_HEALTH_PORT=0
+      - RUST_LOG=info
+    depends_on:
+      immich-server:
+        condition: service_healthy
+root@miku-server:/home/mikuserver/dev/immich-app#

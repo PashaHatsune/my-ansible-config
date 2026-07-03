@@ -15,6 +15,12 @@ services:
       # Монтируем всю папку letsencrypt по тому же пути, что и на хосте
     env_file:
       - /home/mikuserver/disk1/dev/bitwarden/bitwarden/config.env
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.bitwarden.rule=Host(`btw.pashahatsune.pp.ua`)"
+      - "traefik.http.routers.bitwarden.entrypoints=websecure"
+      - "traefik.http.routers.bitwarden.tls=true"
+      - "traefik.http.routers.bitwarden.tls.certresolver=le"
     ports:
       - "2544:80"
     restart: always

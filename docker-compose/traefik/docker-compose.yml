@@ -1,0 +1,80 @@
+networks:
+  proxy-network:
+    external: true
+
+
+
+services:
+  traefik:
+    image: traefik:latest
+    container_name: traefik
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+
+    networks:
+     # Connect to the 'traefik_proxy' overlay network for inter-container communication across nodes
+      - proxy-network
+
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8080:8080"
+
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /home/mikuserver/disk1/dev/traefik/certs:/certs:ro
+      - /home/mikuserver/disk1/dev/traefik/dynamic:/dynamic:ro
+      - /home/mikuserver/disk1/dev/traefik/letsencrypt:/letsencrypt:rw
+
+
+
+    command:
+      # EntryPoints
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.web.http.redirections.entrypoint.to=websecure"
+      - "--entrypoints.web.http.redirections.entrypoint.scheme=https"
+      - "--entrypoints.web.http.redirections.entrypoint.permanent=true"
+      - "--entrypoints.websecure.address=:443"
+      - "--entrypoints.websecure.http.tls=true"
+
+      - "--entrypoints.websecure.http.tls.certresolver=le"
+
+
+      - "--certificatesresolvers.le.acme.email=your-pashahatsune@gmail.com"
+      - "--certificatesresolvers.le.acme.storage=/letsencrypt/acme.json" # Path inside container volume
+      - "--certificatesresolvers.le.acme.httpchallenge.entrypoint=web"
+
+      - "--certificatesresolvers.le.acme.httpchallenge=true"
+
+      # Attach the static configuration tls.yaml file that contains the tls configuration settings
+      - "--providers.file.filename=/dynamic/tls.yaml"
+
+      # Providers
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--providers.docker.network=proxy-network"
+
+      # API & Dashboard
+      - "--api.dashboard=true"
+      - "--api.insecure=false"
+
+      # Observability
+      - "--log.level=INFO"
+      - "--accesslog=true"
+      - "--metrics.prometheus=true"
+
+  # Traefik Dynamic configuration via Docker labels
+    labels:
+      # Enable self‑routing
+      - "traefik.enable=true"
+
+      # Dashboard router
+      - "traefik.http.routers.dashboard.rule=Host(`traefik.pashahatsune.pp.ua`)"
+      - "traefik.http.routers.dashboard.entrypoints=websecure"
+      - "traefik.http.routers.dashboard.service=api@internal"
+      - "traefik.http.routers.dashboard.tls=true"
+
+      # # Basic‑auth middleware
+      # - "traefik.http.middlewares.dashboard-auth.basicauth.users=<PASTE_HASH_HERE>"
+      # - "traefik.http.routers.dashboard.middlewares=dashb

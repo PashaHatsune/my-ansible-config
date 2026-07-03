@@ -15,3 +15,11 @@ services:
     restart: always
     networks:
       - proxy-network
+
+    labels:
+      - "traefik.enable=true"
+
+      - "traefik.http.routers.siyuan.rule=Host(`siyuan.pashahatsune.pp.ua`)"
+      - "traefik.http.routers.siyuan.entrypoints=websecure"
+      - "traefik.http.routers.siyuan.tls=true"
+      - "traefik.http.routers.siyuan.tls.certresolver=le"

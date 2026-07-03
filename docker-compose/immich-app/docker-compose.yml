@@ -33,6 +33,13 @@ services:
       - redis
       - database
     restart: always
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.immich.rule=Host(`immich.pashahatsune.pp.ua`)"
+      - "traefik.http.routers.immich.entrypoints=websecure"
+      - "traefik.http.routers.immich.tls=true"
+      - "traefik.http.routers.immich.tls.certresolver=le"
+      - "traefik.http.services.immich.loadbalancer.server.port=2283"
     healthcheck:
       disable: false
     networks:

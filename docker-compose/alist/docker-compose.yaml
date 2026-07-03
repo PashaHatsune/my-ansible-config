@@ -16,6 +16,13 @@ services:
       - label=disable
     networks:
       - proxy-network
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.alist.rule=Host(`alist.pashahatsune.pp.ua`)"
+      - "traefik.http.routers.alist.entrypoints=websecure"
+      - "traefik.http.routers.alist.tls=true"
+      - "traefik.http.routers.alist.tls.certresolver=le"
+      - "traefik.http.services.alist.loadbalancer.server.port=5244"
     volumes:
       - /home/miku/disk1/dev/alist/data:/opt/alist/data:Z
       - /home/mikuserver:/home/mikuserver:Z

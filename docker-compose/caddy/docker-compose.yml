@@ -1,18 +1,21 @@
-networks:
-  proxy-network:
-    external: true
+# networks:
+#   proxy-network:
+#     external: true
 
-services:
-  caddy:
-    image: caddy
-    container_name: caddy
-    restart: always
-    ports:
-      - 80:80
-      - 443:443
-    volumes:
-      - /home/mikuserver/disk1/dev/caddy/data:/data:Z
-      - /home/mikuserver/disk1/dev/caddy/config:/config:Z
-      - /home/mikuserver/disk1/dev/caddy/Caddyfile:/etc/caddy/Caddyfile:Z
-    networks:
-      - proxy-network
+# services:
+#   caddy:
+#     image: caddy
+#     container_name: caddy
+#     restart: always
+#     volumes:
+#       - /home/mikuserver/disk1/dev/caddy/data:/data:Z
+#       - /home/mikuserver/disk1/dev/caddy/config:/config:Z
+#       - /home/mikuserver/disk1/dev/caddy/Caddyfile:/etc/caddy/Caddyfile:Z
+#     labels:
+#       - "traefik.enable=true"
+#       - "traefik.http.routers.caddy.rule=Host(`caddy.pashahatsune.pp.ua`)"
+#       - "traefik.http.routers.caddy.entrypoints=websecure"
+#       - "traefik.http.routers.caddy.tls=true"
+#       - "traefik.http.routers.caddy.tls.certresolver=le"
+#     networks:
+#       - proxy-network
