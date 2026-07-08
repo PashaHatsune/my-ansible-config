@@ -1,5 +1,6 @@
 - name: docker install
   hosts: myhosts
+  become: yes
   tasks:
 
     - name: update packages
@@ -24,3 +25,5 @@
     - name: start docker installer
       shell: /tmp/docker.sh
          
+    - name: установка сервисов
+      import_playbook: install-docker-services.yml

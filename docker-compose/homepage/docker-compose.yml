@@ -5,7 +5,7 @@ services:
     restart: unless-stopped
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - /home/mikuserver/disk1/dev/homarr:/appdata:Z
+      - /mnt/disk1/dev/homarr:/appdata:Z
     environment:
       - SECRET_ENCRYPTION_KEY=060a836266a973ffbbbdb9c3770aacf5ebd117b9c7351488e4380c58dfcce616
     labels:

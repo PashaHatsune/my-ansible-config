@@ -20,4 +20,4 @@ services:
       caddy.reverse_proxy: "{{upstreams 5244}}"
     volumes:
       - /home/miku/disk1/dev/alist/data:/opt/alist/data:Z
-      - /home/mikuserver:/home/mikuserver:Z
+      - /mnt/disk1:/mnt/disk1:Z

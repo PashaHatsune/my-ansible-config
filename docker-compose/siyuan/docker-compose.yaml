@@ -9,7 +9,7 @@ services:
     ports:
       - "0.0.0.0:6806:6806"
     volumes:
-      - /home/mikuserver/disk1/dev/siyuan:/siyuan/workspace:Z
+      - /mnt/disk1/dev/siyuan:/siyuan/workspace:Z
     command: ["--workspace=/siyuan/workspace", "--accessAuthCode=39miku!Hatsune"]
     restart: always
     networks:

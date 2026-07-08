@@ -12,8 +12,8 @@ services:
     security_opt:
       - label=disable
     volumes:
-      - /home/mikuserver/disk1/dev/tuwunel/tuwunel.toml:/etc/tuwunel.toml:ro,Z
-      - /home/mikuserver/disk1/dev/tuwunel/matrix_db:/var/lib/tuwunel:Z
+      - /mnt/disk1/dev/tuwunel/tuwunel.toml:/etc/tuwunel.toml:ro,Z
+      - /mnt/disk1/dev/tuwunel/matrix_db:/var/lib/tuwunel:Z
     environment:
       - TUWUNEL_CONFIG=/etc/tuwunel.toml
     labels:

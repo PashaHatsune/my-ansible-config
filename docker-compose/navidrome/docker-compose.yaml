@@ -16,8 +16,8 @@ services:
       ND_LASTFM_SECRET: "eb73930f1a440be4430996435ad2ba33"
       ND_LASTFM_ENABLED: "true"
     volumes:
-        - "/home/mikuserver/disk1/dev/storage/navidrome/data:/data:Z"
-        - "/home/mikuserver/disk1/dev/storage/navidrome/music:/music:ro,Z"
+        - "/mnt/disk1/dev/storage/navidrome/data:/data:Z"
+        - "/mnt/disk1/dev/storage/navidrome/music:/music:ro,Z"
     labels:
       caddy: navidrome.pashahatsune.pp.ua
       caddy.reverse_proxy: "{{upstreams 4533}}"

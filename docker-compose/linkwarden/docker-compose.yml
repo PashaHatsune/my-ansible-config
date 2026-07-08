@@ -5,14 +5,14 @@ networks:
 services:
   postgres:
     image: postgres:16-alpine
-    env_file: /home/mikuserver/disk1/dev/linkwarden/.env
+    env_file: /mnt/disk1/dev/linkwarden/.env
     restart: always
     volumes:
-      - /home/mikuserver/disk1/dev/linkwarden/pgdata:/var/lib/postgresql/data
+      - /mnt/disk1/dev/linkwarden/pgdata:/var/lib/postgresql/data
     networks:
       - caddy_net
   linkwarden:
-    env_file: /home/mikuserver/disk1/dev/linkwarden/.env
+    env_file: /mnt/disk1/dev/linkwarden/.env
     environment:
       - DATABASE_URL=postgresql://postgres:${POSTGRES_PASSWORD}@postgres:5432/postgres
     restart: always
@@ -25,7 +25,7 @@ services:
     ports:
       - 3000:3000
     volumes:
-      - /home/mikuserver/disk1/dev/linkwarden/data:/data/data
+      - /mnt/disk1/dev/linkwarden/data:/data/data
     depends_on:
       - postgres
       - meilisearch
@@ -35,6 +35,6 @@ services:
     networks:
       - caddy_net
     env_file:
-      - /home/mikuserver/disk1/dev/linkwarden/.env
+      - /mnt/disk1/dev/linkwarden/.env
     volumes:
-      - /home/mikuserver/disk1/dev/linkwarden/meili_data:/meili_data
+      - /mnt/disk1/dev/linkwarden/meili_data:/meili_data

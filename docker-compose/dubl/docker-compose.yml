@@ -14,12 +14,12 @@ services:
       - label=disable
     volumes:
       - /home//disk1/dev/backrest:/data:z
-      - /home/mikuserver/disk1/dev/backrest/config:/config:z
-      - /home/mikuserver/disk1/dev/backrest/cache:/cache:z
-      - /home/mikuserver/dev:/userdata/mikuserver/dev:ro
-      - /home/mikuserver/disk1/dev:/userdata/disk1/dev:ro
-      - /home/mikuserver/backups:/repos/backups
-      - /home/mikuserver/disk1/backups:/repos/disk1-backups
+      - /mnt/disk1/dev/backrest/config:/config:z
+      - /mnt/disk1/dev/backrest/cache:/cache:z
+      - /mnt/disk1/dev:/userdata/mikuserver/dev:ro
+      - /mnt/disk1/dev:/userdata/disk1/dev:ro
+      - /mnt/disk1/backups:/repos/backups
+      - /mnt/disk1/backups:/repos/disk1-backups
     environment:
       - BACKREST_DATA=/data
       - BACKREST_CONFIG=/config/config.json

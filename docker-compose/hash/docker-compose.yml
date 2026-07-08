@@ -11,8 +11,8 @@ services:
     tmpfs:
       - /var/run/headscale
     volumes:
-      - /home/mikuserver/disk1/dev/hash/config:/etc/headscale:ro,Z
-      - /home/mikuserver/disk1/dev/hash/lib:/var/lib/headscale:Z
+      - /mnt/disk1/dev/hash/config:/etc/headscale:ro,Z
+      - /mnt/disk1/dev/hash/lib:/var/lib/headscale:Z
     command: serve
     healthcheck:
         test: ["CMD", "headscale", "health"]

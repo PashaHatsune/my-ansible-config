@@ -9,9 +9,9 @@ services:
     container_name: bitwarden
     image: vaultwarden/server:latest
     volumes:
-      - /home/mikuserver/disk1/dev/bitwarden/bitwarden/data:/data:Z
+      - /mnt/disk1/dev/bitwarden/bitwarden/data:/data:Z
     env_file:
-      - /home/mikuserver/disk1/dev/bitwarden/bitwarden/config.env
+      - /mnt/disk1/dev/bitwarden/bitwarden/config.env
     labels:
       caddy: btw.pashahatsune.pp.ua
       caddy.@block: "not remote_ip 10.0.0.0/8 172.16.0.0/12 192.168.0.0/16 fd00::/8"

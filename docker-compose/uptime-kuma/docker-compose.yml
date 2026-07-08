@@ -4,7 +4,7 @@ services:
     container_name: uptime-kuma
     restart: always
     volumes:
-      - /home/mikuserver/disk1/dev/uptime-kuma/data:/app/data
+      - /mnt/disk1/dev/uptime-kuma/data:/app/data
     environment:
       - TZ=UTC
       - UMASK=0022

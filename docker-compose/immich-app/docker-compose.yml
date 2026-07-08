@@ -7,10 +7,10 @@ services:
     container_name: immich_server
     image: ghcr.io/immich-app/immich-server:v3.0.1
     volumes:
-      - /home/mikuserver/disk1/dev/immich-app/library:/data:Z
+      - /mnt/disk1/dev/immich-app/library:/data:Z
       - /etc/localtime:/etc/localtime:ro
     env_file:
-      - /home/mikuserver/disk1/dev/immich-app/.env
+      - /mnt/disk1/dev/immich-app/.env
     ports:
       - "2283:2283"
     depends_on:
@@ -46,10 +46,10 @@ services:
       POSTGRES_INITDB_ARGS: "--data-checksums"
       DB_STORAGE_TYPE: "HDD"
     volumes:
-      - /home/mikuserver/disk1/dev/immich-app/postgres:/var/lib/postgresql/data:Z
+      - /mnt/disk1/dev/immich-app/postgres:/var/lib/postgresql/data:Z
     shm_size: 128mb
     env_file:
-      - /home/mikuserver/disk1/dev/immich-app/.env
+      - /mnt/disk1/dev/immich-app/.env
     restart: always
     healthcheck:
       disable: false
