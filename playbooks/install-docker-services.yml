@@ -9,13 +9,13 @@
     
     - name: создание папоки для компоузей
       file:
-        path: /home/miku/dev
+        path: /mnt/disk1/srv
         state: directory
 
     - name: копирование компоузей
       copy: 
         src: /tmp/my-ansible-config/docker-compose/
-        dest: /home/mikuserver/dev
+        dest: /mnt/disk1/srv
         owner: mikuserver
         group: mikuserver
         mode: '0775'
@@ -29,7 +29,7 @@
     
     - name: поиск компоузей
       find:
-        paths: /home/mikuserver/dev
+        paths: /mnt/disk1/dev/srv
         file_type: directory
       register: compose_dirs
 

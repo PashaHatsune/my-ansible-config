@@ -1,0 +1,5 @@
+- name: установка докера
+  import_playbook: install-docker.yml
+
+- name: установка сервисов
+  import_playbook: install-docker-services.yml
